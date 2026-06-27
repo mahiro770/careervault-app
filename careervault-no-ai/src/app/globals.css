@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #f7f7fb;
+    color: #1a1a2e;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white border border-gray-100 rounded-xl shadow-sm p-6 mb-5;
+  }
+  .btn-primary {
+    @apply bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium
+           hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed
+           transition-colors flex items-center gap-1.5;
+  }
+  .btn-outline {
+    @apply bg-transparent text-ink-2 border border-gray-200 px-4 py-2
+           rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-accent px-2.5 py-1.5 rounded-lg text-xs
+           hover:bg-accent-light transition-colors;
+  }
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-200 rounded-lg text-sm
+           bg-surface focus:outline-none focus:border-accent
+           focus:ring-2 focus:ring-accent/10 transition-all;
+  }
+  .nav-item {
+    @apply flex items-center gap-2.5 px-3 py-2.5 rounded-lg cursor-pointer
+           text-[13.5px] text-ink-2 hover:bg-surface-2 hover:text-ink
+           transition-all mb-0.5 select-none;
+  }
+  .nav-item.active {
+    @apply bg-accent-light text-accent font-medium;
+  }
+  .skill-badge {
+    @apply px-2 py-0.5 bg-surface-2 text-ink-2 rounded text-[11px];
+  }
+  .tag {
+    @apply px-2.5 py-1 bg-accent-light text-accent rounded-full text-[11.5px]
+           font-medium flex items-center gap-1;
+  }
+}
