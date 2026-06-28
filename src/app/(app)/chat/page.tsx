@@ -1,6 +1,22 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import type { ChatMessage } from '@/types'
+
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*\*([^*\n]+)\*\*\*/g, '$1')  // ***bold italic***
+    .replace(/\*\*([^*\n]+)\*\*/g, '$1')        // **bold**
+    .replace(/\*([^*\n]+)\*/g, '$1')             // *italic*
+    .replace(/^#{1,6} */gm, '')                  // ## 見出し（スペースなしも対応）
+    .replace(/\*/g, '')                           // 残った * をすべて除去
+    .replace(/`([^`\n]+)`/g, '$1')               // `code`
+}
+
+const WELCOME: ChatMessage = {
+  role: 'assistant',
+  content: 'こんにちは！CareerVaultのAIアシスタントです。\nあなたの職歴・プロフィール情報をもとに、キャリア相談に乗ります。\n\n転職の方向性、強みの整理、面接対策など、何でも聞いてください。',
+}
 
 const SUGGESTIONS = [
   '私のキャリアの強みを分析してください',
@@ -11,13 +27,32 @@ const SUGGESTIONS = [
 ]
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'assistant', content: 'こんにちは！CareerVaultのAIアシスタントです。\nあなたの職歴・プロフィール情報をもとに、キャリア相談に乗ります。\n\n転職の方向性、強みの整理、面接対策など、何でも聞いてください。' }
-  ])
+  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [clearing, setClearing] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const supabase = createClient()
+
+  useEffect(() => { loadHistory() }, [])
+
+  async function loadHistory() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+    setUserId(user.id)
+
+    const { data } = await supabase
+      .from('chat_messages')
+      .select('role, content')
+      .order('created_at', { ascending: true })
+
+    if (data && data.length > 0) {
+      setMessages([WELCOME, ...data.map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))])
+      setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
+    }
+  }
 
   async function send(text?: string) {
     const msg = (text ?? input).trim()
@@ -27,6 +62,7 @@ export default function ChatPage() {
     setMessages(newMessages)
     setInput('')
     setLoading(true)
+    if (textareaRef.current) textareaRef.current.style.height = 'auto'
     setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
 
     const res = await fetch('/api/chat', {
@@ -35,16 +71,41 @@ export default function ChatPage() {
       body: JSON.stringify({ messages: newMessages.map(m => ({ role: m.role, content: m.content })) }),
     })
     const { text: reply } = await res.json()
+
     setMessages(prev => [...prev, { role: 'assistant', content: reply }])
     setLoading(false)
     setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
+
+    if (userId) {
+      await supabase.from('chat_messages').insert([
+        { user_id: userId, role: 'user', content: msg },
+        { user_id: userId, role: 'assistant', content: reply },
+      ])
+    }
+  }
+
+  async function clearHistory() {
+    if (!userId) return
+    if (!confirm('会話履歴をすべて削除しますか？')) return
+    setClearing(true)
+    await supabase.from('chat_messages').delete().eq('user_id', userId)
+    setMessages([WELCOME])
+    setClearing(false)
   }
 
   return (
     <div>
-      <div className="mb-7">
-        <h1 className="text-2xl font-bold text-ink tracking-tight">AIキャリア相談</h1>
-        <p className="text-sm text-ink-3 mt-1">あなたの経歴を把握したAIが、壁打ち相手になります</p>
+      <div className="mb-7 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">AIキャリア相談</h1>
+          <p className="text-sm text-ink-3 mt-1">あなたの経歴を把握したAIが、壁打ち相手になります</p>
+        </div>
+        <button
+          onClick={clearHistory}
+          disabled={clearing || messages.length <= 1}
+          className="text-xs text-ink-3 hover:text-red-500 border border-gray-200 hover:border-red-200 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-30 mt-1">
+          {clearing ? '削除中...' : '履歴をクリア'}
+        </button>
       </div>
 
       <div className="card">
@@ -71,7 +132,7 @@ export default function ChatPage() {
                 ${m.role === 'assistant'
                   ? 'bg-surface-2 text-ink rounded-tl-sm'
                   : 'bg-accent text-white rounded-tr-sm'}`}>
-                {m.content}
+                {m.role === 'assistant' ? stripMarkdown(m.content) : m.content}
               </div>
             </div>
           ))}

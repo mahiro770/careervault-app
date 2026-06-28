@@ -9,6 +9,7 @@ const nav = [
   { href: '/profile',   icon: '👤', label: 'プロフィール' },
   { href: '/chat',      icon: '🤖', label: 'AIキャリア相談' },
   { href: '/generate',  icon: '📄', label: '書類生成' },
+  { href: '/template',  icon: '🗂️', label: 'テンプレート' },
 ]
 
 export default function Sidebar() {

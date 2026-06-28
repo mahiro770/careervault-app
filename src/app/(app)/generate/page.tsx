@@ -1,6 +1,16 @@
 'use client'
 import { useState } from 'react'
 
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*\*([^*\n]+)\*\*\*/g, '$1')
+    .replace(/\*\*([^*\n]+)\*\*/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/^#{1,6} */gm, '')
+    .replace(/\*/g, '')
+    .replace(/`([^`\n]+)`/g, '$1')
+}
+
 type DocType = 'resume' | 'cv' | 'pr'
 
 const TABS: { type: DocType; label: string }[] = [
@@ -70,8 +80,11 @@ export default function GeneratePage() {
               value={industry} onChange={e => setIndustry(e.target.value)} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-ink-2 mb-1">アピールしたいポイント（任意）</label>
-            <input className="form-input" placeholder="例：マネジメント経験、技術力"
+            <label className="block text-xs font-medium text-ink-2 mb-1">
+              アピールしたいポイント
+              <span className="ml-1.5 text-ink-3 font-normal">空欄でAIが職歴から自動推定</span>
+            </label>
+            <input className="form-input" placeholder="例：マネジメント経験、技術力（空欄可）"
               value={focus} onChange={e => setFocus(e.target.value)} />
           </div>
         </div>
@@ -96,7 +109,7 @@ export default function GeneratePage() {
           ${loading || !output ? 'text-ink-3 italic' : 'text-ink-2'}`}>
           {loading
             ? 'AIが書類を生成しています...'
-            : output || 'まだ生成されていません。上のボタンを押すとAIが生成します。'}
+            : output ? stripMarkdown(output) : 'まだ生成されていません。上のボタンを押すとAIが生成します。'}
         </div>
       </div>
     </div>

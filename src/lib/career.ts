@@ -41,10 +41,19 @@ export function buildDocPrompt(
   focus: string
 ): string {
   const opts = industry ? `応募先：${industry}` : ''
-  const foc = focus ? `、アピールポイント：${focus}` : ''
+
+  const focusSection = focus
+    ? `アピールポイント：${focus}`
+    : `アピールポイント：【指定なし】
+まず上記の職歴・実績・スキルを分析し、この候補者の最も強みとなる点を3〜5つ特定してください。
+その強みをアピールポイントとして、以下の書類に自然に組み込んでください。`
+
+  const prefix = [opts, focusSection].filter(Boolean).join('\n')
 
   const prompts = {
-    resume: `以下の情報をもとに、日本語で職務経歴書を作成してください。${opts}${foc}
+    resume: `以下の情報をもとに、日本語で職務経歴書を作成してください。
+${prefix}
+
 フォーマット：
 - 職務要約（3〜4行）
 - 職歴（各社ごとに詳細）
@@ -52,8 +61,15 @@ export function buildDocPrompt(
 - 自己PR
 
 読みやすく、採用担当者に刺さる内容にしてください。`,
-    cv: `以下の情報をもとに、日本語で履歴書の各項目をまとめたサマリーを作成してください。志望動機と自己PRを特に丁寧に書いてください。${opts}`,
-    pr: `以下の情報をもとに、転職活動で使える自己PR文を400〜600字で書いてください。${opts}${foc}
+
+    cv: `以下の情報をもとに、日本語で履歴書の各項目をまとめたサマリーを作成してください。
+${prefix}
+
+志望動機と自己PRを特に丁寧に書いてください。`,
+
+    pr: `以下の情報をもとに、転職活動で使える自己PR文を400〜600字で書いてください。
+${prefix}
+
 具体的なエピソードと数字を盛り込み、説得力のある内容にしてください。`,
   }
   return prompts[type]

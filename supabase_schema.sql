@@ -38,12 +38,23 @@ create table if not exists doc_history (
   created_at timestamptz default now()
 );
 
+-- チャット履歴テーブル
+create table if not exists chat_messages (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users(id) on delete cascade not null,
+  role text check (role in ('user', 'assistant')) not null,
+  content text not null,
+  created_at timestamptz default now()
+);
+
 -- RLS（Row Level Security）有効化
 alter table jobs enable row level security;
 alter table profiles enable row level security;
 alter table doc_history enable row level security;
+alter table chat_messages enable row level security;
 
 -- ポリシー：自分のデータのみ読み書き可能
 create policy "jobs: own data" on jobs for all using (auth.uid() = user_id);
 create policy "profiles: own data" on profiles for all using (auth.uid() = user_id);
 create policy "doc_history: own data" on doc_history for all using (auth.uid() = user_id);
+create policy "chat_messages: own data" on chat_messages for all using (auth.uid() = user_id);

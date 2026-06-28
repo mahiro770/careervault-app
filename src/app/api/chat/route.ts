@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'qwen-qwq-32b',
+      model: 'llama-3.3-70b-versatile',
       max_tokens: 1000,
       messages: [
         { role: 'system', content: systemPrompt },
