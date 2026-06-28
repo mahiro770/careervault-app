@@ -19,8 +19,8 @@ module.exports = {
         'surface-2':      '#fdf4e0',
         'surface-3':      '#f9edd0',
         // Borders
-        hairline:         '#e8d9bc',
-        'hairline-strong':'#d4c4a0',
+        hairline:         '#dcc9a8',
+        'hairline-strong':'#c8b088',
         // Semantic
         success:          '#27a644',
       },
