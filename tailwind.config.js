@@ -4,23 +4,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Linear design system — primary accent (lavender-blue)
+        // Primary accent (lavender-blue)
         accent:           '#5e6ad2',
-        'accent-hover':   '#828fff',
-        'accent-light':   '#1c1f48',  // subtle lavender on dark canvas
+        'accent-hover':   '#4a56c4',
+        'accent-light':   '#ededff',
         // Text hierarchy
-        ink:              '#f7f8f8',
-        'ink-2':          '#d0d6e0',
-        'ink-3':          '#8a8f98',
-        'ink-4':          '#62666d',
-        // Surface ladder
-        canvas:           '#0d1b35',
-        surface:          '#102040',
-        'surface-2':      '#162850',
-        'surface-3':      '#1c3060',
+        ink:              '#1a1a2e',
+        'ink-2':          '#3d3d5c',
+        'ink-3':          '#7b7b9e',
+        'ink-4':          '#aeaec8',
+        // Surface ladder — warm cream theme
+        canvas:           '#fef9ee',
+        surface:          '#ffffff',
+        'surface-2':      '#fdf4e0',
+        'surface-3':      '#f9edd0',
         // Borders
-        hairline:         '#1e3358',
-        'hairline-strong':'#2a4270',
+        hairline:         '#e8d9bc',
+        'hairline-strong':'#d4c4a0',
         // Semantic
         success:          '#27a644',
       },
