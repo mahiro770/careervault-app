@@ -1,51 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background-color: #f7f7fb;
-    color: #1a1a2e;
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    background-color: #010102;
+    color: #f7f8f8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.02em;
+  }
+
+  /* スクロールバーをダークに */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #010102; }
+  ::-webkit-scrollbar-thumb { background: #34343a; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #5e6ad2; }
 }
 
 @layer components {
+  /* カード — surface-1 + hairline border */
   .card {
-    @apply bg-white border border-gray-100 rounded-xl shadow-sm p-6 mb-5;
+    @apply bg-surface border border-hairline rounded-xl p-6 mb-5;
   }
+
+  /* プライマリボタン — lavender */
   .btn-primary {
     @apply bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium
-           hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed
+           hover:bg-accent-hover active:opacity-90
+           disabled:opacity-40 disabled:cursor-not-allowed
            transition-colors flex items-center gap-1.5;
   }
+
+  /* セカンダリボタン */
   .btn-outline {
-    @apply bg-transparent text-ink-2 border border-gray-200 px-4 py-2
-           rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors;
+    @apply bg-transparent text-ink-2 border border-hairline px-4 py-2
+           rounded-lg text-sm font-medium hover:bg-surface-2 hover:text-ink
+           transition-colors;
   }
+
+  /* ゴーストボタン */
   .btn-ghost {
     @apply bg-transparent text-accent px-2.5 py-1.5 rounded-lg text-xs
            hover:bg-accent-light transition-colors;
   }
+
+  /* フォーム入力 */
   .form-input {
-    @apply w-full px-3 py-2 border border-gray-200 rounded-lg text-sm
-           bg-surface focus:outline-none focus:border-accent
-           focus:ring-2 focus:ring-accent/10 transition-all;
+    @apply w-full px-3 py-2 border border-hairline rounded-lg text-sm text-ink
+           bg-surface-2 placeholder:text-ink-4
+           focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20
+           transition-all;
   }
+
+  /* サイドバーナビアイテム */
   .nav-item {
-    @apply flex items-center gap-2.5 px-3 py-2.5 rounded-lg cursor-pointer
-           text-[13.5px] text-ink-2 hover:bg-surface-2 hover:text-ink
+    @apply flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer
+           text-[13px] font-medium text-ink-3
+           hover:bg-surface-2 hover:text-ink
            transition-all mb-0.5 select-none;
   }
   .nav-item.active {
-    @apply bg-accent-light text-accent font-medium;
+    @apply bg-accent-light text-accent;
   }
+
+  /* スキルバッジ */
   .skill-badge {
-    @apply px-2 py-0.5 bg-surface-2 text-ink-2 rounded text-[11px];
+    @apply px-2 py-0.5 bg-surface-2 text-ink-3 border border-hairline
+           rounded text-[11px];
   }
+
+  /* タグ */
   .tag {
     @apply px-2.5 py-1 bg-accent-light text-accent rounded-full text-[11.5px]
            font-medium flex items-center gap-1;
+  }
+
+  /* セクション見出し */
+  .section-label {
+    @apply text-[11px] font-medium text-ink-4 uppercase tracking-widest
+           mb-2 px-3;
+  }
+
+  /* ステータスバッジ */
+  .status-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px]
+           font-medium bg-surface-2 text-ink-3 border border-hairline;
   }
 }

@@ -4,17 +4,32 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        accent: '#5b5bd6',
-        'accent-hover': '#4a4ac4',
-        'accent-light': '#ededff',
-        ink: '#1a1a2e',
-        'ink-2': '#3d3d5c',
-        'ink-3': '#7b7b9e',
-        surface: '#f7f7fb',
-        'surface-2': '#eeeef8',
+        // Linear design system — primary accent (lavender-blue)
+        accent:           '#5e6ad2',
+        'accent-hover':   '#828fff',
+        'accent-light':   '#1c1f48',  // subtle lavender on dark canvas
+        // Text hierarchy
+        ink:              '#f7f8f8',
+        'ink-2':          '#d0d6e0',
+        'ink-3':          '#8a8f98',
+        'ink-4':          '#62666d',
+        // Surface ladder
+        canvas:           '#010102',
+        surface:          '#0f1011',
+        'surface-2':      '#141516',
+        'surface-3':      '#18191a',
+        // Borders
+        hairline:         '#23252a',
+        'hairline-strong':'#34343a',
+        // Semantic
+        success:          '#27a644',
       },
       fontFamily: {
-        jp: ['Noto Sans JP', 'sans-serif'],
+        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+        jp:   ['Noto Sans JP', 'sans-serif'],
+      },
+      letterSpacing: {
+        tighter: '-0.05em',
       },
     },
   },
