@@ -14,13 +14,13 @@ module.exports = {
         'ink-3':          '#8a8f98',
         'ink-4':          '#62666d',
         // Surface ladder
-        canvas:           '#010102',
-        surface:          '#0f1011',
-        'surface-2':      '#141516',
-        'surface-3':      '#18191a',
+        canvas:           '#0d1b35',
+        surface:          '#102040',
+        'surface-2':      '#162850',
+        'surface-3':      '#1c3060',
         // Borders
-        hairline:         '#23252a',
-        'hairline-strong':'#34343a',
+        hairline:         '#1e3358',
+        'hairline-strong':'#2a4270',
         // Semantic
         success:          '#27a644',
       },

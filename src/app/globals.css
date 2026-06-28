@@ -6,7 +6,7 @@
 @layer base {
   body {
     font-family: 'Inter', 'Noto Sans JP', sans-serif;
-    background-color: #010102;
+    background-color: #0d1b35;
     color: #f7f8f8;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -18,8 +18,8 @@
 
   /* スクロールバーをダークに */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #010102; }
-  ::-webkit-scrollbar-thumb { background: #34343a; border-radius: 9999px; }
+  ::-webkit-scrollbar-track { background: #0d1b35; }
+  ::-webkit-scrollbar-thumb { background: #2a4270; border-radius: 9999px; }
   ::-webkit-scrollbar-thumb:hover { background: #5e6ad2; }
 }
 
